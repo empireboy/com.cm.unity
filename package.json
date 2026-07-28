@@ -1,0 +1,15 @@
+{
+  "name": "com.cm.unity",
+  "displayName": "CM Unity",
+  "version": "0.1.0",
+  "unity": "6000.3",
+  "author": "Casper Meloen",
+  "description": "CM Unity is a Unity-specific implementation of the CM framework.",
+  "dependencies": {
+    "com.cm.core": "https://github.com/empireboy/com.cm.core.git"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/empireboy/com.cm.unity.git"
+  }
+}
