@@ -35,7 +35,7 @@ namespace CM.Unity.Presentation
 
             // Facade
             Container.Bind<CharacterFacade>().AsSingle();
-            Container.Bind<CM.Core.Domain.ITickable>().To<CharacterFacade>().FromResolve();
+            Container.Bind<Core.Domain.ITickable>().To<CharacterFacade>().FromResolve();
 
             Container.BindInterfacesTo<TickableAdapter>().AsSingle();
         }
