@@ -7,30 +7,24 @@ namespace CM.Unity.Presentation
 {
     public class GridViewInstaller : MonoInstaller
     {
-        [SerializeField]
-        private GridView _gridView;
+        [field: SerializeField]
+        protected GridView GridView { get; private set; }
 
-        [SerializeField]
-        private Tilemap _tilemap;
+        [field: SerializeField]
+        protected Tilemap Tilemap { get; private set; }
+
+        protected Core.Domain.Grid Grid { get; private set; }
 
         public override void InstallBindings()
         {
-            Container.BindInstance(_gridView).AsSingle();
-            Container.BindInstance(_tilemap).AsSingle();
+            Container.BindInstance(GridView).AsSingle();
+            Container.BindInstance(Tilemap).AsSingle();
 
-            BoundsInt bounds = _tilemap.cellBounds;
+            BoundsInt bounds = Tilemap.cellBounds;
 
-            Core.Domain.Grid grid = new(bounds.size.x, bounds.size.y);
+            Grid = new(bounds.size.x, bounds.size.y);
 
-            for (int i = 0; i < bounds.size.x; i++)
-            {
-                for (int j = 0; j < bounds.size.y; j++)
-                {
-                    grid.GetCell(new Int2(i, j)).IsBlocked = Random.value < 0.15f;
-                }
-            }
-
-            Container.BindInstance(grid).AsSingle();
+            Container.BindInstance(Grid).AsSingle();
         }
     }
 }
