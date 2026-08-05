@@ -18,7 +18,7 @@ namespace CM.Unity.Presentation
 
         private void Awake()
         {
-            _origin = Tilemap.cellBounds.min + Vector3Int.up;
+            _origin = Tilemap.cellBounds.min;
         }
 
         public Vector3Int ToTilePosition(Int2 position)
@@ -46,7 +46,7 @@ namespace CM.Unity.Presentation
                 Tilemap = GetComponentInChildren<Tilemap>();
 
             if (_origin == Vector3.zero)
-                _origin = Tilemap.cellBounds.min + Vector3Int.up;
+                _origin = Tilemap.cellBounds.min;
 
             GUIStyle style = new()
             {
