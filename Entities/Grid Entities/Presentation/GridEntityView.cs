@@ -68,11 +68,19 @@ namespace CM.Unity.Presentation
             SetMoving(isMoving);
         }
 
+        private void OnTeleported(Int2 position)
+        {
+            OnPositionChanged(position);
+
+            transform.position = _targetPosition;
+        }
+
         private void OnEnable()
         {
             _entityFacade.PositionChanged += OnPositionChanged;
             _entityFacade.DirectionChanged += OnDirectionChanged;
             _entityFacade.MovementStateChanged += OnMovementStateChanged;
+            _entityFacade.Teleported += OnTeleported;
         }
 
         private void OnDisable()
@@ -80,6 +88,7 @@ namespace CM.Unity.Presentation
             _entityFacade.PositionChanged -= OnPositionChanged;
             _entityFacade.DirectionChanged -= OnDirectionChanged;
             _entityFacade.MovementStateChanged -= OnMovementStateChanged;
+            _entityFacade.Teleported -= OnTeleported;
         }
 
 #if UNITY_EDITOR
