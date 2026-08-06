@@ -25,14 +25,6 @@ namespace CM.Unity.Presentation
 
         private Vector3 _targetPosition;
 
-        private void Start()
-        {
-            _entityFacade.TryTeleport(new Int2(15, 9), Direction.Down);
-            _targetPosition = _gridView.ToWorldPosition(_entityFacade.Position);
-            transform.position = _targetPosition;
-            SetAnimationDirection(_entityFacade.Direction.ToInt2());
-        }
-
         private void Update()
         {
             if (transform.position != _targetPosition)
