@@ -18,12 +18,12 @@ namespace CM.Unity.Presentation
 
         private void Awake()
         {
-            _origin = Tilemap.cellBounds.min;
+            _origin = new(Grid.Origin.x, Grid.Origin.y, 0);
         }
 
-        public Vector3Int ToTilePosition(Int2 position)
+        public Vector3Int ToTilePosition(Int2 gridPosition)
         {
-            return _origin + new Vector3Int(position.x, position.y, 0);
+            return _origin + new Vector3Int(gridPosition.x, gridPosition.y, 0);
         }
 
         public Int2 ToGridPosition(Vector3Int tilePosition)
@@ -44,9 +44,6 @@ namespace CM.Unity.Presentation
         {
             if (Tilemap == null)
                 Tilemap = GetComponentInChildren<Tilemap>();
-
-            if (_origin == Vector3.zero)
-                _origin = Tilemap.cellBounds.min;
 
             GUIStyle style = new()
             {

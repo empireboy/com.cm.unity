@@ -1,3 +1,4 @@
+using CM.Core.Domain;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Zenject;
@@ -21,7 +22,7 @@ namespace CM.Unity.Presentation
 
             BoundsInt bounds = Tilemap.cellBounds;
 
-            Grid = new(bounds.size.x, bounds.size.y);
+            Grid = new(bounds.size.x, bounds.size.y, new Int2(0, 0));
 
             Container.BindInstance(Grid).AsSingle();
         }
