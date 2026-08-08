@@ -5,23 +5,23 @@ using Zenject;
 
 namespace CM.Unity.Presentation
 {
-    public class GridEntityView : MonoBehaviour
+    public class GridActorView : MonoBehaviour
     {
         private static readonly int IsMovingHash = Animator.StringToHash("IsMoving");
         private static readonly int DirectionXHash = Animator.StringToHash("DirectionX");
         private static readonly int DirectionYHash = Animator.StringToHash("DirectionY");
 
         [Inject]
-        private GridEntityFacade _entityFacade;
+        private readonly GridActorFacade _actorFacade;
 
         [Inject]
-        private GridEntitySettings _entitySettings;
+        private readonly GridActorSettings _actorSettings;
 
         [Inject]
-        private GridView _gridView;
+        private readonly GridView _gridView;
 
         [Inject]
-        private Animator _animator;
+        private readonly Animator _animator;
 
         private Vector3 _targetPosition;
 
@@ -32,14 +32,17 @@ namespace CM.Unity.Presentation
                 transform.position = Vector3.MoveTowards(
                     transform.position,
                     _targetPosition,
-                    _entitySettings.moveSpeed * Time.deltaTime
+                    _actorSettings.moveSpeed * Time.deltaTime
                 );
 
                 return;
             }
 
-            if (_entityFacade.IsMoving)
-                _entityFacade.NotifyMovementFinished();
+            if (_actorFacade.IsMoving)
+            {
+                _actorFacade.NotifyTileReached();
+                _actorFacade.NotifyMovementFinished();
+            }
         }
 
         private void SetAnimationDirection(Int2 direction)
@@ -77,28 +80,28 @@ namespace CM.Unity.Presentation
 
         private void OnEnable()
         {
-            _entityFacade.PositionChanged += OnPositionChanged;
-            _entityFacade.DirectionChanged += OnDirectionChanged;
-            _entityFacade.MovementStateChanged += OnMovementStateChanged;
-            _entityFacade.Teleported += OnTeleported;
+            _actorFacade.PositionChanged += OnPositionChanged;
+            _actorFacade.DirectionChanged += OnDirectionChanged;
+            _actorFacade.MovementStateChanged += OnMovementStateChanged;
+            _actorFacade.Teleported += OnTeleported;
         }
 
         private void OnDisable()
         {
-            _entityFacade.PositionChanged -= OnPositionChanged;
-            _entityFacade.DirectionChanged -= OnDirectionChanged;
-            _entityFacade.MovementStateChanged -= OnMovementStateChanged;
-            _entityFacade.Teleported -= OnTeleported;
+            _actorFacade.PositionChanged -= OnPositionChanged;
+            _actorFacade.DirectionChanged -= OnDirectionChanged;
+            _actorFacade.MovementStateChanged -= OnMovementStateChanged;
+            _actorFacade.Teleported -= OnTeleported;
         }
 
 #if UNITY_EDITOR
 
         private void OnDrawGizmosSelected()
         {
-            if (_entityFacade == null || _gridView == null)
+            if (_actorFacade == null || _gridView == null)
                 return;
 
-            Vector3 position = _gridView.ToWorldPosition(_entityFacade.Position);
+            Vector3 position = _gridView.ToWorldPosition(_actorFacade.Position);
 
             Gizmos.color = Color.red;
             Gizmos.DrawWireCube(position, new Vector3(0.32f, 0.32f, 0f));

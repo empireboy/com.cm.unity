@@ -4,20 +4,20 @@ using UnityEngine;
 
 namespace CM.Unity.Presentation
 {
-    public class GridEntityMovementController : IGridEntityMovementController
+    public class GridActorMovementController : ITickable
     {
-        private readonly GridEntityFacade _entityFacade;
+        private readonly GridActorFacade _actorFacade;
 
-        public GridEntityMovementController(GridEntityFacade facade)
+        public GridActorMovementController(GridActorFacade facade)
         {
-            _entityFacade = facade;
+            _actorFacade = facade;
 
-            _entityFacade.MovementFinished += OnMovementFinished;
+            _actorFacade.MovementFinished += OnMovementFinished;
         }
 
         public void Tick()
         {
-            if (_entityFacade.IsMoving)
+            if (_actorFacade.IsMoving)
                 return;
 
             TryMoveFromInput();
@@ -29,14 +29,14 @@ namespace CM.Unity.Presentation
 
             if (direction == Direction.None)
             {
-                _entityFacade.SetMoving(false);
+                _actorFacade.SetMoving(false);
                 return;
             }
 
-            bool moved = _entityFacade.TryMove(direction);
+            bool moved = _actorFacade.TryMove(direction);
 
             if (!moved)
-                _entityFacade.SetMoving(false);
+                _actorFacade.SetMoving(false);
         }
 
         private Direction GetInputDirection()

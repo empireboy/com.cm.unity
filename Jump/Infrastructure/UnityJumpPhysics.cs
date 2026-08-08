@@ -1,4 +1,4 @@
-using CM.Core.Interfaces;
+using CM.Core.Application;
 using UnityEngine;
 
 namespace CM.Unity.Infrastructure

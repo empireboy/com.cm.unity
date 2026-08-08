@@ -1,6 +1,5 @@
 using CM.Core.Application;
 using CM.Core.Domain;
-using CM.Core.Interfaces;
 using CM.Unity.Infrastructure;
 using UnityEngine;
 using Zenject;

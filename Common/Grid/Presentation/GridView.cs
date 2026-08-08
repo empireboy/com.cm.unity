@@ -49,7 +49,8 @@ namespace CM.Unity.Presentation
             {
                 normal =
                 {
-                    textColor = Color.red
+                    textColor = Color.red,
+                    background = Texture2D.blackTexture
                 },
                 alignment = TextAnchor.MiddleCenter
             };
