@@ -2,7 +2,6 @@ using CM.Core.Domain;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using Zenject;
 
 namespace CM.Unity.Presentation
 {
@@ -12,16 +11,6 @@ namespace CM.Unity.Presentation
         private Tilemap _tilemap;
 
         public Tilemap Tilemap => _tilemap;
-
-        [Inject]
-        private readonly Core.Domain.Grid _grid;
-
-        private Vector3Int _origin;
-
-        private void Awake()
-        {
-            _origin = new(_grid.Origin.x, _grid.Origin.y, 0);
-        }
 
         public Vector3Int ToTilePosition(Int2 gridPosition)
         {
@@ -45,6 +34,25 @@ namespace CM.Unity.Presentation
             Vector3Int tilePosition = ToTilePosition(gridPosition);
 
             return _tilemap.GetCellCenterWorld(tilePosition);
+        }
+
+        public Vector3 ToWorldPosition(Float2 gridPosition)
+        {
+            Vector3Int bottomLeftTile = new(
+                Mathf.FloorToInt(gridPosition.x),
+                Mathf.FloorToInt(gridPosition.y),
+                0
+            );
+
+            Vector3 bottomLeftWorld = _tilemap.GetCellCenterWorld(bottomLeftTile);
+
+            Vector3 offset = new(
+                (gridPosition.x - bottomLeftTile.x) * _tilemap.cellSize.x,
+                (gridPosition.y - bottomLeftTile.y) * _tilemap.cellSize.y,
+                0f
+            );
+
+            return bottomLeftWorld + offset;
         }
 
 #if UNITY_EDITOR
