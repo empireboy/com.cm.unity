@@ -25,6 +25,12 @@ namespace CM.Unity.Presentation
 
         private Vector3 _targetPosition;
 
+        private void Start()
+        {
+            OnPositionChanged(_actorFacade.Position);
+            SetAnimationDirection(_actorFacade.Direction.ToInt2());
+        }
+
         private void Update()
         {
             if (transform.position != _targetPosition)

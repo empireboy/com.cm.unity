@@ -14,12 +14,17 @@ namespace CM.Unity.Presentation
         [SerializeField]
         private GridActorSettingsSO _actorSettings;
 
+        [Inject]
+        private GridView _gridView;
+
         public override void InstallBindings()
         {
+            Int2 position = _gridView.ToGridPosition(_animator.transform.position);
+
             GridActorState gridActorState = new()
             {
-                Position = new Int2(0, 0),
-                Direction = Direction.Down
+                Position = position,
+                Direction = _actorSettings.settings.direction
             };
 
             GridActor gridActor = new(gridActorState);

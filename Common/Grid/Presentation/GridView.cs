@@ -8,42 +8,51 @@ namespace CM.Unity.Presentation
 {
     public class GridView : MonoBehaviour
     {
-        [Inject]
-        public Tilemap Tilemap { get; private set; }
+        [SerializeField]
+        private Tilemap _tilemap;
+
+        public Tilemap Tilemap => _tilemap;
 
         [Inject]
-        public Core.Domain.Grid Grid { get; }
+        private readonly Core.Domain.Grid _grid;
 
         private Vector3Int _origin;
 
         private void Awake()
         {
-            _origin = new(Grid.Origin.x, Grid.Origin.y, 0);
+            _origin = new(_grid.Origin.x, _grid.Origin.y, 0);
         }
 
         public Vector3Int ToTilePosition(Int2 gridPosition)
         {
-            return _origin + new Vector3Int(gridPosition.x, gridPosition.y, 0);
+            return new Vector3Int(gridPosition.x, gridPosition.y, 0);
         }
 
         public Int2 ToGridPosition(Vector3Int tilePosition)
         {
-            return new Int2(tilePosition.x - _origin.x, tilePosition.y - _origin.y);
+            return new Int2(tilePosition.x, tilePosition.y);
+        }
+
+        public Int2 ToGridPosition(Vector3 worldPosition)
+        {
+            Vector3Int tilePosition = _tilemap.WorldToCell(worldPosition);
+
+            return ToGridPosition(tilePosition);
         }
 
         public Vector3 ToWorldPosition(Int2 gridPosition)
         {
             Vector3Int tilePosition = ToTilePosition(gridPosition);
 
-            return Tilemap.GetCellCenterWorld(tilePosition);
+            return _tilemap.GetCellCenterWorld(tilePosition);
         }
 
 #if UNITY_EDITOR
 
         private void OnDrawGizmosSelected()
         {
-            if (Tilemap == null)
-                Tilemap = GetComponentInChildren<Tilemap>();
+            if (_tilemap == null)
+                _tilemap = GetComponentInChildren<Tilemap>();
 
             GUIStyle style = new()
             {
@@ -55,12 +64,12 @@ namespace CM.Unity.Presentation
                 alignment = TextAnchor.MiddleCenter
             };
 
-            foreach (Vector3Int tilePosition in Tilemap.cellBounds.allPositionsWithin)
+            foreach (Vector3Int tilePosition in _tilemap.cellBounds.allPositionsWithin)
             {
-                if (!Tilemap.HasTile(tilePosition))
+                if (!_tilemap.HasTile(tilePosition))
                     continue;
 
-                Vector3 worldPosition = Tilemap.GetCellCenterWorld(tilePosition);
+                Vector3 worldPosition = _tilemap.GetCellCenterWorld(tilePosition);
 
                 Int2 gridPosition = ToGridPosition(tilePosition);
 
