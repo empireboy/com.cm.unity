@@ -17,6 +17,9 @@ namespace CM.Unity.Presentation
         [Inject]
         private GridView _gridView;
 
+        [Inject]
+        private Core.Domain.Grid _grid;
+
         public override void InstallBindings()
         {
             Int2 position = _gridView.ToGridPosition(_rootTransform.position);
@@ -29,16 +32,14 @@ namespace CM.Unity.Presentation
 
             GridActor gridActor = new(gridActorState);
 
+            _grid.TryOccupy(gridActor, position);
+
             Container.Bind<IGridActor>().FromInstance(gridActor).AsSingle();
 
             Container.BindInstance(_actorSettings.settings).AsSingle();
 
             // Facade
             Container.BindInterfacesAndSelfTo<GridActorFacade>().AsSingle();
-
-            Container.Bind<Core.Domain.ITickable>().To<GridActorMovementController>().AsSingle();
-
-            Container.BindInterfacesTo<TickableAdapter>().AsSingle();
         }
     }
 }
