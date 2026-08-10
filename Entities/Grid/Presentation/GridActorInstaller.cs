@@ -9,7 +9,7 @@ namespace CM.Unity.Presentation
     public class GridActorInstaller : MonoInstaller
     {
         [SerializeField]
-        private Animator _animator;
+        private Transform _rootTransform;
 
         [SerializeField]
         private GridActorSettingsSO _actorSettings;
@@ -19,7 +19,7 @@ namespace CM.Unity.Presentation
 
         public override void InstallBindings()
         {
-            Int2 position = _gridView.ToGridPosition(_animator.transform.position);
+            Int2 position = _gridView.ToGridPosition(_rootTransform.position);
 
             GridActorState gridActorState = new()
             {
@@ -30,8 +30,6 @@ namespace CM.Unity.Presentation
             GridActor gridActor = new(gridActorState);
 
             Container.Bind<IGridActor>().FromInstance(gridActor).AsSingle();
-
-            Container.Bind<Animator>().FromInstance(_animator).AsSingle();
 
             Container.BindInstance(_actorSettings.settings).AsSingle();
 
