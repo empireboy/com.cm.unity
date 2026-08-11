@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace CM.Unity.Presentation
 {
-    public class GridActorMovementController : ITickable
+    public class GridActorMovementInputController : ITickable
     {
         private readonly GridActorFacade _actorFacade;
 
-        public GridActorMovementController(GridActorFacade facade)
+        public GridActorMovementInputController(GridActorFacade facade)
         {
             _actorFacade = facade;
 

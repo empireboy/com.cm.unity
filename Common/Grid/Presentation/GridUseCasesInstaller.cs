@@ -10,6 +10,7 @@ namespace CM.Unity.Presentation
             Container.Bind<GridMovementUseCase>().AsSingle();
             Container.Bind<GridTeleportUseCase>().AsSingle();
             Container.Bind<GridOccupancyUseCase>().AsSingle();
+            Container.Bind<GridInteractionUseCase>().AsSingle();
         }
     }
 }

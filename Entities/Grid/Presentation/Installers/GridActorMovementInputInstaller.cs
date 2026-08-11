@@ -6,9 +6,7 @@ namespace CM.Unity.Presentation
     {
         public override void InstallBindings()
         {
-            Container.Bind<Core.Domain.ITickable>().To<GridActorMovementController>().AsSingle();
-
-            Container.BindInterfacesTo<TickableAdapter>().AsSingle();
+            Container.Bind<Core.Domain.ITickable>().To<GridActorMovementInputController>().AsSingle();
         }
     }
 }
