@@ -1,3 +1,4 @@
+using CM.Unity.Infrastructure;
 using Zenject;
 
 namespace CM.Unity.Presentation
@@ -7,6 +8,8 @@ namespace CM.Unity.Presentation
         public override void InstallBindings()
         {
             Container.Bind<Core.Domain.ITickable>().To<GridActorMovementInputController>().AsSingle();
+
+            Container.BindInterfacesTo<TickableAdapter>().AsSingle();
         }
     }
 }
