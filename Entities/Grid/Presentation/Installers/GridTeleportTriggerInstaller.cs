@@ -49,5 +49,28 @@ namespace CM.Unity.Presentation
 
             _grid.GetCell(position).SetTrigger(trigger);
         }
+
+        private void OnDrawGizmos()
+        {
+            if (!_gridView)
+                _gridView = FindFirstObjectByType<GridView>();
+
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireCube(_rootGameObject.transform.position, new Vector3(0.32f, 0.32f, 0));
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            if (!_gridView)
+                _gridView = FindFirstObjectByType<GridView>();
+
+            Vector3 position = _gridView.ToWorldPosition(new Int2(_destinationX, _destinationY));
+
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireCube(position, new Vector3(0.32f, 0.32f, 0));
+
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(_rootGameObject.transform.position, position);
+        }
     }
 }
