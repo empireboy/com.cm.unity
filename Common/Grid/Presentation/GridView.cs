@@ -66,10 +66,12 @@ namespace CM.Unity.Presentation
             {
                 normal =
                 {
-                    textColor = Color.red,
-                    background = Texture2D.blackTexture
+                    textColor = Color.black,
+                    background = Texture2D.whiteTexture
                 },
-                alignment = TextAnchor.MiddleCenter
+                fontStyle = FontStyle.Bold,
+                alignment = TextAnchor.MiddleCenter,
+                padding = new RectOffset(2, 2, 2, 2)
             };
 
             foreach (Vector3Int tilePosition in _tilemap.cellBounds.allPositionsWithin)
