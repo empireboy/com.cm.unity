@@ -17,7 +17,7 @@ namespace CM.Unity.Presentation
             Container.Bind<InputAction>()
                 .WithId("Move")
                 .FromInstance(moveInputAction)
-                .AsSingle();
+                .AsCached();
 
             Container.Bind<Core.Domain.ITickable>().To<GridActorMovementInputController>().AsSingle();
         }

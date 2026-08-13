@@ -17,7 +17,7 @@ namespace CM.Unity.Presentation
             Container.Bind<InputAction>()
                 .WithId("Interact")
                 .FromInstance(interactInputAction)
-                .AsSingle();
+                .AsCached();
 
             Container.Bind<Core.Domain.ITickable>().To<GridActorInteractionInputController>().AsSingle();
         }
