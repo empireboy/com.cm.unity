@@ -7,16 +7,21 @@ namespace CM.Unity.Presentation
     public class GridActorMovementInputController : ITickable
     {
         private readonly GridActorFacade _actorFacade;
+        private readonly GameStateManager _gameStateManager;
 
-        public GridActorMovementInputController(GridActorFacade facade)
+        public GridActorMovementInputController(GridActorFacade facade, GameStateManager gameStateManager)
         {
             _actorFacade = facade;
+            _gameStateManager = gameStateManager;
 
             _actorFacade.MovementFinished += OnMovementFinished;
         }
 
         public void Tick()
         {
+            if (_gameStateManager.Current != GameStates.Gameplay)
+                return;
+
             if (_actorFacade.IsMoving)
                 return;
 
