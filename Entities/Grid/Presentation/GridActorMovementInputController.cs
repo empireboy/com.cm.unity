@@ -1,18 +1,22 @@
 using CM.Core.Application;
 using CM.Core.Domain;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using Zenject;
 
 namespace CM.Unity.Presentation
 {
-    public class GridActorMovementInputController : ITickable
+    public class GridActorMovementInputController : Core.Domain.ITickable
     {
         private readonly GridActorFacade _actorFacade;
         private readonly GameStateManager _gameStateManager;
+        private readonly InputAction _moveInputAction;
 
-        public GridActorMovementInputController(GridActorFacade facade, GameStateManager gameStateManager)
+        public GridActorMovementInputController(GridActorFacade facade, GameStateManager gameStateManager, [Inject(Id = "Move")] InputAction moveInputAction)
         {
             _actorFacade = facade;
             _gameStateManager = gameStateManager;
+            _moveInputAction = moveInputAction;
 
             _actorFacade.MovementFinished += OnMovementFinished;
         }
@@ -30,7 +34,9 @@ namespace CM.Unity.Presentation
 
         private void TryMoveFromInput()
         {
-            Direction direction = GetInputDirection();
+            Vector2 input = _moveInputAction.ReadValue<Vector2>();
+
+            Direction direction = GetInputDirection(input);
 
             if (direction == Direction.None)
             {
@@ -44,18 +50,18 @@ namespace CM.Unity.Presentation
                 _actorFacade.SetMoving(false);
         }
 
-        private Direction GetInputDirection()
+        private Direction GetInputDirection(Vector2 input)
         {
-            if (Input.GetKey(KeyCode.UpArrow))
+            if (input.y > 0)
                 return Direction.Up;
 
-            if (Input.GetKey(KeyCode.DownArrow))
+            if (input.y < 0)
                 return Direction.Down;
 
-            if (Input.GetKey(KeyCode.LeftArrow))
+            if (input.x < 0)
                 return Direction.Left;
 
-            if (Input.GetKey(KeyCode.RightArrow))
+            if (input.x > 0)
                 return Direction.Right;
 
             return Direction.None;
