@@ -7,9 +7,6 @@ namespace CM.Unity.Presentation
     [RequireComponent(typeof(TickableInstaller))]
     public class GridActorInteractionInputInstaller : MonoInstaller
     {
-        [SerializeField]
-        private InputActionAsset _inputActionAsset;
-
         public override void InstallBindings()
         {
             InputAction interactInputAction = InputSystem.actions.FindAction("Interact");

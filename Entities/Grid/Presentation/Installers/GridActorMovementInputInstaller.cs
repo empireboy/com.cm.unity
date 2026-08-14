@@ -7,9 +7,6 @@ namespace CM.Unity.Presentation
     [RequireComponent(typeof(TickableInstaller))]
     public class GridActorMovementInputInstaller : MonoInstaller
     {
-        [SerializeField]
-        private InputActionAsset _inputActionAsset;
-
         public override void InstallBindings()
         {
             InputAction moveInputAction = InputSystem.actions.FindAction("Move");
@@ -20,16 +17,6 @@ namespace CM.Unity.Presentation
                 .AsCached();
 
             Container.Bind<Core.Domain.ITickable>().To<GridActorMovementInputController>().AsSingle();
-        }
-
-        private void OnEnable()
-        {
-            _inputActionAsset.FindActionMap("Gameplay").Enable();
-        }
-
-        private void OnDisable()
-        {
-            _inputActionAsset.FindActionMap("Gameplay").Disable();
         }
     }
 }
