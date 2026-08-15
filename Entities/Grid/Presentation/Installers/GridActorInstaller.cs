@@ -22,7 +22,7 @@ namespace CM.Unity.Presentation
 
         protected Int2 Position => _gridView.ToGridPosition(_rootTransform.position);
 
-        protected GridActorSettings Settings => _settings.settings;
+        protected GridActorSettingsSO Settings => _settings;
 
         protected Core.Domain.Grid Grid => _grid;
 
@@ -35,7 +35,8 @@ namespace CM.Unity.Presentation
 
             Container.Bind<IGridActor>().FromInstance(actor).AsSingle();
 
-            Container.BindInstance(Settings).AsSingle();
+            Container.BindInstance(Settings.entitySettings).AsSingle();
+            Container.BindInstance(Settings.actorSettings).AsSingle();
 
             Container.BindInterfacesAndSelfTo<GridActorFacade>().AsSingle();
         }
@@ -51,7 +52,7 @@ namespace CM.Unity.Presentation
             return new GridActorState
             {
                 Position = Position,
-                Direction = Settings.direction
+                Direction = Settings.entitySettings.startingDirection
             };
         }
 
