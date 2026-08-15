@@ -12,34 +12,52 @@ namespace CM.Unity.Presentation
         private Transform _rootTransform;
 
         [SerializeField]
-        private GridActorSettingsSO _actorSettings;
+        private GridActorSettingsSO _settings;
 
         [Inject]
-        private GridView _gridView;
+        private readonly GridView _gridView;
 
         [Inject]
-        private Core.Domain.Grid _grid;
+        private readonly Core.Domain.Grid _grid;
+
+        protected Int2 Position => _gridView.ToGridPosition(_rootTransform.position);
+
+        protected GridActorSettings Settings => _settings.settings;
+
+        protected Core.Domain.Grid Grid => _grid;
 
         public override void InstallBindings()
         {
-            Int2 position = _gridView.ToGridPosition(_rootTransform.position);
+            GridActorState state = CreateState();
+            GridActor actor = CreateActor(state);
 
-            GridActorState gridActorState = new()
-            {
-                Position = position,
-                Direction = _actorSettings.settings.direction
-            };
+            Grid.TryOccupy(actor, Position);
 
-            GridActor gridActor = new(gridActorState);
+            Container.Bind<IGridActor>().FromInstance(actor).AsSingle();
 
-            _grid.TryOccupy(gridActor, position);
+            Container.BindInstance(Settings).AsSingle();
 
-            Container.Bind<IGridActor>().FromInstance(gridActor).AsSingle();
-
-            Container.BindInstance(_actorSettings.settings).AsSingle();
-
-            // Facade
             Container.BindInterfacesAndSelfTo<GridActorFacade>().AsSingle();
+        }
+
+        protected virtual void Reset()
+        {
+            if (!_rootTransform)
+                _rootTransform = GetComponentInParent<GameObjectContext>().transform;
+        }
+
+        protected virtual GridActorState CreateState()
+        {
+            return new GridActorState
+            {
+                Position = Position,
+                Direction = Settings.direction
+            };
+        }
+
+        protected virtual GridActor CreateActor(GridActorState state)
+        {
+            return new GridActor(state);
         }
     }
 }
