@@ -26,14 +26,16 @@ namespace CM.Unity.Presentation
 
         protected Core.Domain.Grid Grid => _grid;
 
+        protected GridActor Actor { get; private set; }
+
         public override void InstallBindings()
         {
             GridActorState state = CreateState();
-            GridActor actor = CreateActor(state);
+            Actor = CreateActor(state);
 
-            Grid.TryOccupy(actor, Position);
+            Grid.TryOccupy(Actor, Position);
 
-            Container.Bind<IGridActor>().FromInstance(actor).AsSingle();
+            Container.Bind<IGridActor>().FromInstance(Actor).AsSingle();
 
             Container.BindInstance(Settings.entitySettings).AsSingle();
             Container.BindInstance(Settings.actorSettings).AsSingle();
