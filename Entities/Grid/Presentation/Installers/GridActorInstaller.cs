@@ -40,7 +40,7 @@ namespace CM.Unity.Presentation
             Container.BindInstance(Settings.entitySettings).AsSingle();
             Container.BindInstance(Settings.actorSettings).AsSingle();
 
-            Container.BindInterfacesAndSelfTo<GridActorFacade>().AsSingle();
+            BindFacade();
         }
 
         protected virtual void Reset()
@@ -61,6 +61,11 @@ namespace CM.Unity.Presentation
         protected virtual GridActor CreateActor(GridActorState state)
         {
             return new GridActor(state);
+        }
+
+        protected virtual void BindFacade()
+        {
+            Container.Bind<GridActorFacade>().AsSingle();
         }
     }
 }
